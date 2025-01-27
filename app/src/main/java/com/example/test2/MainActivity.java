@@ -21,23 +21,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.textView);
+        ImageView image = findViewById(R.id.weatherImage);
+
         // Fetch weather details
         WeatherDataManager.getWeatherSummary(new WeatherDataManager.WeatherSummaryCallback() {
             @Override
             public void onSuccess(WeatherSummary weatherSummary) {
-                    // Display the weather information
-                    textView.setText(
+                String symbolcode = weatherSummary.getWeatherSymbol();
+                image.setImageResource(getSymbolImage(symbolcode));
+                // Display the weather information
+                textView.setText(
                             "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
                                     "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
-                                    "Wind Direction: " + weatherSummary.getWindDirection() + " \n" + weatherSummary.getWeatherSymbol()
+                                    "Wind Direction: " + weatherSummary.getWindDirection() + " \n"
                     );
-                }
+            }
 
 
             @Override
             public void onError(String error) {
                 // Handle error
-            textView.setText("Error: " + error);
+                textView.setText("Error: " + error);
             }
 
             public int getSymbolImage(String symbolcode){
