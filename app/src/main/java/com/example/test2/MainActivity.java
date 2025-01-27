@@ -1,5 +1,6 @@
 package com.example.test2;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(WeatherSummary weatherSummary) {
                 String symbolcode = weatherSummary.getWeatherSymbol();
                 imageView.setImageResource(getSymbolImage(symbolcode));
+                Date currentTime = Calendar.getInstance().getTime();
+                SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
                 // Display the weather information
                 textView.setText(
+                        "Updated: " + clockFormat.format(currentTime) + "\n" +
                         "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
                                 "Humidity: " + weatherSummary.getHumidity() + " %\n" +
                                 "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
