@@ -40,6 +40,7 @@ public class WeatherDataManager {
                         // Extract temperature
                         double temperature = details.getAir_temperature();
                         double windSpeed = details.getWind_speed();
+                        double humidity = details.getRelative_humidity();
                         // Extract wind direction
                         double windDirectionValue = details.getWind_from_direction();
                         String windDirection = getWindDirection(windDirectionValue);
@@ -48,7 +49,7 @@ public class WeatherDataManager {
                         String imageUrl = firstTimeSeries.getData().getNext_1_hours().getSummary().getSymbol_code();
 
                         // Create a WeatherSummary object
-                        WeatherSummary summary = new WeatherSummary(temperature, windSpeed, windDirection, imageUrl);
+                        WeatherSummary summary = new WeatherSummary(temperature, windSpeed, humidity, windDirection, imageUrl);
 
                         // Pass it to the callback
                         callback.onSuccess(summary);
@@ -74,13 +75,13 @@ public class WeatherDataManager {
     // Helper function to determine wind direction as a string
     private static String getWindDirection(double windDirection) {
         if (windDirection >= 315 || windDirection < 45) {
-            return "north";
+            return "Northerly";
         } else if (windDirection >= 45 && windDirection < 135) {
-            return "east";
+            return "Easterly";
         } else if (windDirection >= 135 && windDirection < 225) {
-            return "south";
+            return "Southerly";
         } else {
-            return "west";
+            return "Westerly";
         }
     }
 }
