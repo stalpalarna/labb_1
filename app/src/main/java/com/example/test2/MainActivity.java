@@ -1,6 +1,5 @@
 package com.example.test2;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     ImageView imageView;
-
     Button button;
 
     @Override
@@ -28,6 +26,19 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.weatherImage);
         button = findViewById(R.id.refresh);
 
+        refreshInfo();
+
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(click ->{
+            refreshInfo();
+        });
+    }
+
+    public int getSymbolImage(String symbolcode){
+        return getResources().getIdentifier(symbolcode, "drawable", getPackageName());
+    }
+
+    private void refreshInfo(){
         // Fetch weather details
         WeatherDataManager.getWeatherSummary(new WeatherDataManager.WeatherSummaryCallback() {
             @Override
@@ -36,28 +47,17 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageResource(getSymbolImage(symbolcode));
                 // Display the weather information
                 textView.setText(
-                            "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
-                                    "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
-                                    "Wind Direction: " + weatherSummary.getWindDirection() + " \n"
-                    );
-                button.setVisibility(View.VISIBLE);
-
-                button.setOnClickListener(click ->{
-
-                });
+                        "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
+                                "Humidity: " + weatherSummary.getHumidity() + " %\n" +
+                                "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
+                                "Wind Direction: " + weatherSummary.getWindDirection() +" \n"
+                );
             }
-
-
             @Override
             public void onError(String error) {
                 // Handle error
                 textView.setText("Error: " + error);
             }
-
-            public int getSymbolImage(String symbolcode){
-                return getResources().getIdentifier(symbolcode, "drawable", getPackageName());
-            }
         });
-
     }
 }
