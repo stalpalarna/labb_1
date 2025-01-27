@@ -1,11 +1,14 @@
 package com.example.test2;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Console;
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     TextView textView;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.textView);
+        imageView = findViewById(R.id.weatherImage);
+
+
+
 
         Retrofit retrofit = ApiClient.getClient();
         RequestWeather requestWeather = retrofit.create(RequestWeather.class);
+
 
         requestWeather.getWeatherData().enqueue(new Callback<WeatherData>() {
             @Override
@@ -42,8 +51,14 @@ public class MainActivity extends AppCompatActivity {
                     if (weatherData.getProperties() != null && !weatherData.getProperties().getTimeseries().isEmpty()) {
                         WeatherData.TimeSeriesData firstTimeSeries = weatherData.getProperties().getTimeseries().get(0);
                         WeatherData.Details details = firstTimeSeries.getData().getInstant().getDetails();
+
+                        String symbolcode = firstTimeSeries.getData().getNext_1_hours().getSummary().getSymbol_code();
+                        imageView.setImageResource(getSymbolImage(symbolcode));
+
+
                         double temp = details.getAir_temperature();
-                        textView.setText("Air Tempera: " + temp + " °C");
+                        textView.setText("Air Tempera: " + temp + " °C ");
+
                     } else {
                         textView.setText("No weather data available");
                     }
@@ -61,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<WeatherData> call, Throwable error) {
                 textView.setText(error.getMessage());
+            }
+
+            public int getSymbolImage(String symbolcode){
+                return getResources().getIdentifier(symbolcode, "drawable", getPackageName());
             }
         });
     }
