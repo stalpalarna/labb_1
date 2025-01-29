@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static final String BASE_URL = "https://api.met.no";
-    private static final String USER_AGENT = "YourAppName/1.0 (your.email@example.com)";
+    private static final String USER_AGENT = "Labb_1/1.0";
 
     private static Retrofit retrofit = null;
 
