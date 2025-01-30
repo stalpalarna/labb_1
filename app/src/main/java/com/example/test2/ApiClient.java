@@ -1,11 +1,7 @@
 package com.example.test2;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -17,20 +13,23 @@ public class ApiClient {
 
     public static Retrofit getClient() {
         if (retrofit == null) {
+            // Create an OkHttpClient with an interceptor to add the User-Agent header
             OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request original = chain.request();
-                            Request request = original.newBuilder()
-                                    .header("User-Agent", USER_AGENT)
-                                    .method(original.method(), original.body())
-                                    .build();
-                            return chain.proceed(request);
-                        }
+                    // Add an interceptor to the OkHttpClient using a lambda expression
+                    .addInterceptor(chain -> { // Lambda expression from code completion
+                        // Get the original request
+                        Request original = chain.request();
+                        // Create a new request with the User-Agent header
+                        Request request = original.newBuilder()
+                                .header("User-Agent", USER_AGENT)
+                                .method(original.method(), original.body())
+                                .build();
+                        // Proceed with the request
+                        return chain.proceed(request);
                     })
                     .build();
 
+            // Build the Retrofit instance
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)

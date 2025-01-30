@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
                 // Display the weather information
                 textView.setText(
-                        "Updated: " + clockFormat.format(currentTime) + "\n" +
-                        "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
-                                "Humidity: " + weatherSummary.getHumidity() + " %\n" +
-                                "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
-                                "Wind Direction: " + weatherSummary.getWindDirection() +" \n"
+                    "Updated: " + clockFormat.format(currentTime) + "\n" +
+                    "Air Temperature: " + weatherSummary.getTemperature() + " °C\n" +
+                    "Humidity: " + weatherSummary.getHumidity() + " %\n" +
+                    "Wind Speed: " + weatherSummary.getWindSpeed() + " m/s\n" +
+                    "Wind Direction: " + weatherSummary.getWindDirection() +" \n"
                 );
             }
             @Override
